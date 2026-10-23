@@ -15,7 +15,7 @@ export default function Layout() {
           Dashboard
         </NavLink>
         <NavLink to="/animal" className={linkClass}>
-          Animamls
+          Animals
         </NavLink>
         <NavLink to="/adoption" className={linkClass}>
           Adoption

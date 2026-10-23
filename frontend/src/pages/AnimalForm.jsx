@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function AnimalForm() {
-  return (
-    <div>AnimalForm</div>
-  )
+  return <div>AnimalForm</div>;
 }
 
-export default AnimalForm
+export default AnimalForm;

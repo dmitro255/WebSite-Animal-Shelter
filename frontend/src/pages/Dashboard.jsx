@@ -120,6 +120,7 @@ function Dashboard() {
             const count = animals.filter(
               (animal) => animal.status === status,
             ).length;
+            
             const dotColor = {
               available: "bg-[#5c9564]",
               reserved: "bg-[#d29445]",

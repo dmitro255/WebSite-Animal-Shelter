@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function ApplicationsCRUD() {
-  return (
-    <div>ApplicationsCRUD</div>
-  )
+  return <div>Applications ---- CRUD</div>;
 }
 
-export default ApplicationsCRUD
+export default ApplicationsCRUD;
