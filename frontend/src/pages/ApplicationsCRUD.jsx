@@ -1,7 +1,9 @@
 import React from "react";
 
 function ApplicationsCRUD() {
-  return <div>Applications ---- CRUD</div>;
+  return <div>
+    
+  </div>;
 }
 
 export default ApplicationsCRUD;

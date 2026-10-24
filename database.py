@@ -46,11 +46,11 @@ def init_db() -> None:
             """
         )
 
-        count = conn.execute(
-            "SELECT COUNT(*) AS n FROM animals"
-        ).fetchone()["n"]
-        if count == 0:
-            with conn:
+        with conn:
+            count = conn.execute(
+                "SELECT COUNT(*) AS n FROM animals"
+            ).fetchone()["n"]
+            if count == 0:
                 animals = [
                     ("Барсик", "Кот", "Британская короткошёрстная", 3,
                      "Спокойный и ласковый кот.", "reserved"),
@@ -90,6 +90,33 @@ def init_db() -> None:
                     VALUES (?, ?, ?, ?, ?)
                     """,
                     adoptions,
+                )
+
+            extra_animals = [
+                ("Луна", "Кошка", "Сибирская", 2,
+                 "Любознательная кошка, любит играть с мячиками.", "available"),
+                ("Тайсон", "Собака", "Лабрадор", 4,
+                 "Добрый и спокойный пёс, хорошо ладит с детьми.", "available"),
+                ("Пушок", "Кролик", "Карликовый", 1,
+                 "Тихий кролик, привык к домашнему содержанию.", "available"),
+                ("Соня", "Кошка", "Беспородная", 6,
+                 "Нежная и спокойная кошка, любит уютные места.", "available"),
+                ("Гром", "Собака", "Метис", 3,
+                 "Энергичный пёс, которому нравятся долгие прогулки.", "available"),
+                ("Чип", "Хомяк", "Джунгарский", 1,
+                 "Небольшой активный хомяк, особенно бодр вечером.", "available"),
+            ]
+            for animal in extra_animals:
+                conn.execute(
+                    """
+                    INSERT INTO animals
+                        (name, species, breed, age, description, status)
+                    SELECT ?, ?, ?, ?, ?, ?
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM animals WHERE name = ? AND species = ?
+                    )
+                    """,
+                    (*animal, animal[0], animal[1]),
                 )
     finally:
         conn.close()
