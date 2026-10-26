@@ -26,7 +26,8 @@ def create_adoption(data: AdoptionCreate):
     try:
         return adoption.create(data.model_dump())
     except ValueError as error:
-        raise HTTPException(status_code=409, detail=str(error)) from error
+        status_code = 404 if str(error) == "Animal not found." else 409
+        raise HTTPException(status_code=status_code, detail=str(error)) from error
 
 
 @adoption_router.put("/{adoption_id}", response_model=AdoptionOut)
@@ -34,7 +35,7 @@ def update_adoption(adoption_id: int, data: AdoptionCreate):
     if animal.get(data.animal_id) is None:
         raise HTTPException(status_code=404, detail="Animal not found.")
     try:
-        row = adoption.update(adoption_id, data.model_dump()) # Метод .model_dump() преобразует его в обычный Python-словарь:
+        row = adoption.update(adoption_id, data.model_dump())
 
     except ValueError as error:
         raise HTTPException(status_code=409, detail=str(error)) from error

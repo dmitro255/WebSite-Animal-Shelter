@@ -52,16 +52,16 @@ def init_db() -> None:
             ).fetchone()["n"]
             if count == 0:
                 animals = [
-                    ("Барсик", "Кот", "Британская короткошёрстная", 3,
-                     "Спокойный и ласковый кот.", "reserved"),
-                    ("Рекс", "Собака", "Овчарка", 5,
-                     "Активный, знает базовые команды.", "reserved"),
-                    ("Мурка", "Кошка", None, 2,
-                     "Дружелюбная кошка, любит играть.", "reserved"),
-                    ("Дружок", "Собака", "Метис", 1,
-                     "Весёлый щенок.", "available"),
-                    ("Кеша", "Попугай", "Волнистый", 1,
-                     "Любит общение и хорошо поёт.", "available"),
+                    ("Milo", "Cat", "British Shorthair", 3,
+                     "A calm and affectionate cat.", "reserved"),
+                    ("Rex", "Dog", "German Shepherd", 5,
+                     "An active dog who knows basic commands.", "reserved"),
+                    ("Misty", "Cat", None, 2,
+                     "A friendly cat who loves to play.", "reserved"),
+                    ("Buddy", "Dog", "Mixed Breed", 1,
+                     "A cheerful young dog.", "available"),
+                    ("Kiwi", "Parrot", "Budgerigar", 1,
+                     "Enjoys company and loves to sing.", "available"),
                 ]
                 animal_ids = []
                 for animal in animals:
@@ -76,12 +76,12 @@ def init_db() -> None:
                     animal_ids.append(cursor.lastrowid)
 
                 adoptions = [
-                    (animal_ids[0], "Анна Иванова", "+7-900-000-00-01",
-                     "Хочу взять кота в семью.", "pending"),
-                    (animal_ids[1], "Иван Петров", "+7-900-000-00-02",
-                     "Есть опыт содержания собак.", "pending"),
-                    (animal_ids[2], "Мария Смирнова", "+7-900-000-00-03",
-                     "Ищу домашнего питомца.", "pending"),
+                    (animal_ids[0], "Anna Ivanova", "+1-555-010-0001",
+                     "I would love to welcome a cat into my family.", "pending"),
+                    (animal_ids[1], "Ivan Petrov", "+1-555-010-0002",
+                     "I have experience caring for dogs.", "pending"),
+                    (animal_ids[2], "Maria Smirnova", "+1-555-010-0003",
+                     "I am looking for a companion animal.", "pending"),
                 ]
                 conn.executemany(
                     """
@@ -93,18 +93,18 @@ def init_db() -> None:
                 )
 
             extra_animals = [
-                ("Луна", "Кошка", "Сибирская", 2,
-                 "Любознательная кошка, любит играть с мячиками.", "available"),
-                ("Тайсон", "Собака", "Лабрадор", 4,
-                 "Добрый и спокойный пёс, хорошо ладит с детьми.", "available"),
-                ("Пушок", "Кролик", "Карликовый", 1,
-                 "Тихий кролик, привык к домашнему содержанию.", "available"),
-                ("Соня", "Кошка", "Беспородная", 6,
-                 "Нежная и спокойная кошка, любит уютные места.", "available"),
-                ("Гром", "Собака", "Метис", 3,
-                 "Энергичный пёс, которому нравятся долгие прогулки.", "available"),
-                ("Чип", "Хомяк", "Джунгарский", 1,
-                 "Небольшой активный хомяк, особенно бодр вечером.", "available"),
+                ("Luna", "Cat", "Siberian", 2,
+                 "A curious cat who loves playing with balls.", "available"),
+                ("Tyson", "Dog", "Labrador", 4,
+                 "A kind, calm dog who gets along well with children.", "available"),
+                ("Puff", "Rabbit", "Dwarf", 1,
+                 "A quiet rabbit who is used to living indoors.", "available"),
+                ("Sophie", "Cat", "Domestic Shorthair", 6,
+                 "A gentle, calm cat who loves cozy places.", "available"),
+                ("Thunder", "Dog", "Mixed Breed", 3,
+                 "An energetic dog who enjoys long walks.", "available"),
+                ("Chip", "Hamster", "Djungarian", 1,
+                 "A small, active hamster who is especially lively in the evening.", "available"),
             ]
             for animal in extra_animals:
                 conn.execute(
@@ -113,10 +113,10 @@ def init_db() -> None:
                         (name, species, breed, age, description, status)
                     SELECT ?, ?, ?, ?, ?, ?
                     WHERE NOT EXISTS (
-                        SELECT 1 FROM animals WHERE name = ? AND species = ?
+                        SELECT 1 FROM animals WHERE name = ?
                     )
                     """,
-                    (*animal, animal[0], animal[1]),
+                    (*animal, animal[0]),
                 )
     finally:
         conn.close()

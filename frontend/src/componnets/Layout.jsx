@@ -18,7 +18,7 @@ export default function Layout() {
           Animals
         </NavLink>
         <NavLink to="/adoption" className={linkClass}>
-          Adoption
+          Applications
         </NavLink>
       </nav>
 

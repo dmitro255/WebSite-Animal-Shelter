@@ -11,7 +11,7 @@ def get_animals(
     species: str | None = None,
     status: AnimalStatus | None = Query(default=None),
 ):
-    return animal.list_all()
+    return animal.list_all(species=species, status=status)
 
 
 @animal_router.get("/{animal_id}", response_model=AnimalOut)

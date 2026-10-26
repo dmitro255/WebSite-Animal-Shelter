@@ -29,6 +29,7 @@ def create(data: dict) -> dict:
     conn = connect()
     try:
         with conn:
+            _ensure_animal_not_adopted(conn, data["animal_id"])
             if data["status"] == "approved":
                 _ensure_approvable(conn, data["animal_id"])
 
@@ -137,6 +138,17 @@ def _ensure_approvable( conn: sqlite3.Connection,animal_id: int, excluding_adopt
         animal["status"] == "adopted" and current_approval is None
     ):
         raise ValueError("This animal already has an approved adoption.")
+
+
+def _ensure_animal_not_adopted(conn: sqlite3.Connection, animal_id: int) -> None:
+    row = conn.execute(
+        "SELECT status FROM animals WHERE id = ?",
+        (animal_id,),
+    ).fetchone()
+    if row is None:
+        raise ValueError("Animal not found.")
+    if row["status"] == "adopted":
+        raise ValueError("Cannot create an application for an adopted animal.")
 
 
 def _sync_animal_status(conn: sqlite3.Connection, animal_id: int) -> None:

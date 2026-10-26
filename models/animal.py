@@ -1,11 +1,25 @@
 from database import connect
 
 
-def list_all() -> list[dict]:
+def list_all(
+    species: str | None = None,
+    status: str | None = None,
+) -> list[dict]:
     conn = connect()
     try:
+        conditions = []
+        parameters = []
+        if species:
+            conditions.append("species = ?")
+            parameters.append(species)
+        if status:
+            conditions.append("status = ?")
+            parameters.append(status)
+
+        where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
         rows = conn.execute(
-            "SELECT * FROM animals ORDER BY id"
+            f"SELECT * FROM animals {where_clause} ORDER BY id",
+            parameters,
         ).fetchall()
         return [dict(row) for row in rows]
     finally:
